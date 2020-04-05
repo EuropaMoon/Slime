@@ -14,14 +14,27 @@ Game::Game() {
     } else {
         font.loadFromFile("font.ttf");
     }
-    
+
+    //Loading infos for Game objects
+    infoGameObjects.open("Objects/Info");
+    //Check if info file id loaded
+    if (!infoGameObjects) {
+        std::cout << "Missing Info File" << std::endl;
+    }
+
+    //create buffer to store texture names
+    char buffer[100] = "";
+
     //Loading Textures
-    for (const auto & i : texturePath) {
-        if(!textures->loadFromFile(i)) {
-            std::cout << "Missing Image : " << i << std::endl;
+    for (int i = 0; infoGameObjects.getline(buffer, 100); i++) {
+        //Load and check if Image gets loaded
+        textures.resize(i + 1);
+        if (!textures[i].loadFromFile("textures/" + std::string(buffer) + ".png")) {
+            std::cout << "Missing Image : " << std::string(buffer) << " in folder textures" << std::endl;
         }
     }
-    
+    //Closes info file
+    infoGameObjects.close();
 }
 
 Game::~Game() {

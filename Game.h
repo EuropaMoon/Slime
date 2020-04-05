@@ -10,8 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <iostream>
-
-#define TextureCount 3
+#include <fstream>
 
 class Game {
 public:
@@ -25,14 +24,11 @@ public:
 
     sf::RenderWindow window;
     sf::Font font;
-    sf::Texture textures[TextureCount];
+    std::vector<sf::Texture> textures;
 
 private:
     std::unique_ptr<GameState> currentState;
-
-    std::string texturePath[3] = { "/home/maximilian/Documents/CLion/Game/textures/Player.png",
-                                   "/home/maximilian/Documents/CLion/Game/textures/Full_Block_Laboratory.png",
-                                   "/home/maximilian/Documents/CLion/Game/textures/Corner_Block_Laboratory.png" };
+    std::ifstream infoGameObjects;
 };
 
 #endif //TEST_GAME_H
