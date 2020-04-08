@@ -28,7 +28,7 @@ public:
 
 private:
     std::unique_ptr<GameState> currentState;
-    std::ifstream infoGameObjects;
+    std::ifstream info;
 };
 
 #endif //TEST_GAME_H

@@ -7,7 +7,37 @@
 #include "PlayState.h"
 
 Game::Game() {
-    window.create(sf::VideoMode(1200, 720), "Game");
+
+    //create buffer to store infos
+    char buffer[100] = "";
+
+    //Loading settings file
+    info.open("settings");
+    //Check if settings file is loaded
+    if (!info) {
+        std::cout << "Missing settings file" << std::endl;
+    }
+
+    //create to store the VideoMode for Window
+    sf::VideoMode videoMode;
+    //searching through the settings file for game settings
+    for (int j = 0; info.getline(buffer, 100); j++) {
+        //transforming the char array into a string
+        std::string sInfo = std::string(buffer);
+
+        //searching for the resolution setting
+        if (sInfo.substr(0, sInfo.find_first_of(':')) == "resolution") {
+            //saving the width and height for the window
+            videoMode.width = std::stoi(sInfo.substr(sInfo.find_first_of(':') + 1, sInfo.find_first_of('x')));
+            videoMode.height = std::stoi(sInfo.substr(sInfo.find_first_of('x') + 1, sInfo.find_first_of('\n')));
+        }
+    }
+
+    //Close settings file
+    info.close();
+
+    //creating the game window
+    window.create(videoMode, "Game");
 
     if (!font.loadFromFile("font.ttf")) {
         printf("Font not found!\n");
@@ -16,25 +46,22 @@ Game::Game() {
     }
 
     //Loading infos for Game objects
-    infoGameObjects.open("Objects/Info");
-    //Check if info file id loaded
-    if (!infoGameObjects) {
-        std::cout << "Missing Info File" << std::endl;
+    info.open("Objects/Info");
+    //Check if info file is loaded
+    if (!info) {
+        std::cout << "Missing info file" << std::endl;
     }
 
-    //create buffer to store texture names
-    char buffer[100] = "";
-
     //Loading Textures
-    for (int i = 0; infoGameObjects.getline(buffer, 100); i++) {
+    for (int i = 0; info.getline(buffer, 100); i++) {
         //Load and check if Image gets loaded
         textures.resize(i + 1);
         if (!textures[i].loadFromFile("textures/" + std::string(buffer) + ".png")) {
             std::cout << "Missing Image : " << std::string(buffer) << " in folder textures" << std::endl;
         }
     }
-    //Closes info file
-    infoGameObjects.close();
+    //Close info file
+    info.close();
 }
 
 Game::~Game() {
