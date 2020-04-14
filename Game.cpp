@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "MainMenuState.h"
 #include "PlayState.h"
+#include "Playground.h"
 
 Game::Game() {
 
@@ -31,6 +32,14 @@ Game::Game() {
             videoMode.width = std::stoi(sInfo.substr(sInfo.find_first_of(':') + 1, sInfo.find_first_of('x')));
             videoMode.height = std::stoi(sInfo.substr(sInfo.find_first_of('x') + 1, sInfo.find_first_of('\n')));
         }
+
+        //searching for the font setting
+        if (sInfo.substr(0, sInfo.find_first_of(':')) == "font") {
+            //saving the font
+            if (!font.loadFromFile("fonts/" + sInfo.substr(sInfo.find_first_of(':') + 1, sInfo.find_first_of('\n')))) {
+                printf("Font not found!\n");
+            }
+        }
     }
 
     //Close settings file
@@ -38,12 +47,6 @@ Game::Game() {
 
     //creating the game window
     window.create(videoMode, "Game");
-
-    if (!font.loadFromFile("font.ttf")) {
-        printf("Font not found!\n");
-    } else {
-        font.loadFromFile("font.ttf");
-    }
 
     //Loading infos for Game objects
     info.open("Objects/Info");
@@ -83,13 +86,13 @@ void Game::Run() {
 void Game::ChangeState(gameStates newState) {
     switch (newState) {
         case gameStates::MAINMENU:
-            currentState = std::move(std::make_unique<MainMenuState>());
+            currentState = std::move(std::make_unique<MainMenuState>(*this));
             break;
         case gameStates::PLAY:
             currentState = std::move(std::make_unique<PlayState>());
             break;
-        case gameStates::CREATE:
-            //currentState = std::move(std::unique_ptr<MainMenuState>(new MainMenuState));
+        case gameStates::PLAYGROUND:
+            currentState = std::move(std::make_unique<Playground>(*this));
             break;
     }
 }

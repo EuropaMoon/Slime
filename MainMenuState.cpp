@@ -5,15 +5,20 @@
 #include "MainMenuState.h"
 #include "Game.h"
 
-MainMenuState::MainMenuState() {
+MainMenuState::MainMenuState(Game &game) {
     circle.setFillColor(sf::Color::Blue);
-    circle.setPosition(100, 100);
+    circle.setPosition(game.window.getSize().x / 2.f,game.window.getSize().y / 3.f);
     circle.setRadius(10);
 
-    text.setCharacterSize(12);
-    text.setPosition(sf::Vector2f(100,100));
-    text.setFillColor(sf::Color::White);
-    text.setString("MainMenuState");
+    playStateButton.setCharacterSize(12);
+    playStateButton.setPosition(sf::Vector2f(game.window.getSize().x / 2.f,game.window.getSize().y / 3.f));
+    playStateButton.setFillColor(sf::Color::White);
+    playStateButton.setString("Play State");
+
+    playgroundButton.setCharacterSize(12);
+    playgroundButton.setPosition(sf::Vector2f(game.window.getSize().x / 2.f,game.window.getSize().y / 2.f));
+    playgroundButton.setFillColor(sf::Color::White);
+    playgroundButton.setString("PlAYGROUND");
 }
 
 MainMenuState::~MainMenuState() {
@@ -29,12 +34,15 @@ void MainMenuState::HandleEvents(Game &game) {
 }
 
 void MainMenuState::Update(Game &game) {
-    if (text.getFont() == nullptr) {
-        text.setFont(game.font);
+    if (playStateButton.getFont() == nullptr) {
+        playStateButton.setFont(game.font);
+        playgroundButton.setFont(game.font);
     }
 
-    if (sf::Mouse::getPosition(game.window).x > game.window.getSize().x / 2) {
+    if (playStateButton.getGlobalBounds().contains(sf::Mouse::getPosition(game.window).x, sf::Mouse::getPosition(game.window).y)) {
         game.ChangeState(Game::gameStates::PLAY);
+    }else if (playgroundButton.getGlobalBounds().contains(sf::Mouse::getPosition(game.window).x, sf::Mouse::getPosition(game.window).y)) {
+        game.ChangeState(Game::gameStates::PLAYGROUND);
     }
 }
 
@@ -42,7 +50,8 @@ void MainMenuState::Draw(Game &game) {
     game.window.clear();
 
     game.window.draw(circle);
-    game.window.draw(text);
+    game.window.draw(playStateButton);
+    game.window.draw(playgroundButton);
 
     game.window.display();
 }

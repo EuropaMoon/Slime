@@ -13,7 +13,7 @@ PlayState::PlayState() {
     text.setCharacterSize(12);
     text.setPosition(sf::Vector2f(100,100));
     text.setFillColor(sf::Color::White);
-    text.setString("PlayState");
+    text.setString("MAIN MENU");
 }
 
 PlayState::~PlayState() {
@@ -33,7 +33,7 @@ void PlayState::Update(Game &game) {
         text.setFont(game.font);
     }
 
-    if (sf::Mouse::getPosition(game.window).x < game.window.getSize().x / 2) {
+    if (text.getGlobalBounds().contains(sf::Mouse::getPosition(game.window).x, sf::Mouse::getPosition(game.window).y)) {
         game.ChangeState(Game::gameStates::MAINMENU);
     }
 }

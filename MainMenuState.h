@@ -7,10 +7,11 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
+#include "Playfield.h"
 
 class MainMenuState : public GameState {
 public:
-    MainMenuState();
+    MainMenuState(Game &game);
     ~MainMenuState() override;
 
     void HandleEvents(Game& game) override;
@@ -19,7 +20,8 @@ public:
 
 private:
     sf::CircleShape circle;
-    sf::Text text;
+    sf::Text playStateButton;
+    sf::Text playgroundButton;
 };
 
 #endif //TEST_MAINMENUSTATE_H

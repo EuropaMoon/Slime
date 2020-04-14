@@ -17,7 +17,7 @@ public:
     Game();
     ~Game();
 
-    enum class gameStates { MAINMENU, PLAY, CREATE};
+    enum class gameStates { MAINMENU, PLAY, PLAYGROUND };
 
     void Run();
     void ChangeState(gameStates newState);
