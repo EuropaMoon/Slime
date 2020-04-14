@@ -33,7 +33,7 @@ void MainMenuState::Update(Game &game) {
         text.setFont(game.font);
     }
 
-    if (sf::Mouse::getPosition(game.window).x > 600) {
+    if (sf::Mouse::getPosition(game.window).x > game.window.getSize().x / 2) {
         game.ChangeState(Game::gameStates::PLAY);
     }
 }

@@ -11,7 +11,7 @@
 class PlayState : public GameState {
 public:
     PlayState();
-    ~PlayState();
+    ~PlayState() override;
 
     void HandleEvents(Game& game) override;
     void Update(Game& game) override;

@@ -11,7 +11,7 @@
 class MainMenuState : public GameState {
 public:
     MainMenuState();
-    ~MainMenuState();
+    ~MainMenuState() override;
 
     void HandleEvents(Game& game) override;
     void Update(Game& game) override;
